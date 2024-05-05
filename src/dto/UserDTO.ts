@@ -4,5 +4,5 @@ export class UserDTO {
   password: string;
   readonly nom: string;
   readonly prenom: string;
-  jwt?: string;
+  readonly dateNaissance: Date;
 }

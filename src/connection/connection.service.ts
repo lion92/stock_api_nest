@@ -33,11 +33,14 @@ export class ConnectionService {
     user: LoginDTO, res,
   ): Promise<{ id: number; email: string; prenom: string; nom: string, jwt: string }> {
     const { password, email } = user;
+    console.log(user)
     const userFind = await this.userRepository.findOneBy({ email: email });
+    console.log(userFind)
     if (!userFind) {
       throw new NotFoundException('User Not found');
     } else {
       let bool = await compare(user.password, userFind.password);
+      console.log(bool);
       if (!bool) {
         throw new UnauthorizedException('illegal');
       } else {
