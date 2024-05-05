@@ -6,6 +6,7 @@ import {ArticleDTO} from "../dto/ArticleDTO";
 import {InjectRepository} from "@nestjs/typeorm";
 import {Article} from "../entity/Article.entity";
 import {Repository} from "typeorm";
+import {Stock} from "../entity/Stock.entity";
 
 @Controller('article')
 export class ArticleController {
@@ -21,9 +22,13 @@ export class ArticleController {
         return await this.articleService.findAll();
     }
   @Get('/byuser/:user')
-  async findAllByUser(@Param('user') userId): Promise<ArticleDTO[] | string> {
+  async findAllByUser(@Param('user') userId): Promise<any[] | string> {
     return await this.articleService.findByUser(userId);
   }
+    @Get('/stockBy/:user')
+    async findAllByUserStock(@Param('user') userId): Promise<any[] | string> {
+        return await this.articleService.findByUserStock(userId);
+    }
 
 
 

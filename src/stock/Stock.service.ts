@@ -8,31 +8,33 @@ import {StockDTO} from "../dto/StockDTO";
 export class StockService {
   constructor(
     @InjectRepository(Stock)
-    private articleRepository: Repository<Stock>,
+    private stockRepository: Repository<Stock>,
   ) {
   }
 
   findAll(): Promise<Stock[]> {
-    return this.articleRepository.find();
+    return this.stockRepository.find();
   }
 
   async findOneBy(id: number): Promise<Stock | null> {
-    return await this.articleRepository.findOneBy({ id });
+    return await this.stockRepository.findOneBy({ id });
   }
 
   async delete(id: number) {
-    await this.articleRepository.delete(id);
+    await this.stockRepository.delete(id);
     console.log('1');
   }
 
-  async create(categorieDTO: Stock) {
-    await this.articleRepository.save(categorieDTO);
+  async create(stock: StockDTO) {
+    await this.stockRepository.save(stock);
   }
 
-  async update(id: number, articleDTO: StockDTO) {
-    await this.articleRepository.update(id, {
-      article: articleDTO.article
-    });
+  async update(id: number, stockDTO: StockDTO) {
+    await this.stockRepository.update(id, {
+      quantite:stockDTO.quantite,
+      dateAjout: stockDTO.dateAjout,
+      article:stockDTO.article
+    }).catch(e=>console.log(e));
   }
 
 }

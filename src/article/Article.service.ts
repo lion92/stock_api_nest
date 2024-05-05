@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {Article} from "../entity/Article.entity";
 import {ArticleDTO} from "../dto/ArticleDTO";
+import {Stock} from "../entity/Stock.entity";
 
 
 @Injectable()
@@ -10,6 +11,8 @@ export class ArticleService {
   constructor(
     @InjectRepository(Article)
     private articleRepository: Repository<Article>,
+    @InjectRepository(Stock)
+    private stockRepository: Repository<Stock>,
   ) {
   }
 
@@ -29,13 +32,25 @@ export class ArticleService {
   async create(categorieDTO: Article) {
     await this.articleRepository.save(categorieDTO);
   }
-  async findByUser(id): Promise<any[]> {
-    const qb = this.articleRepository.createQueryBuilder('article');
-    qb.select(
-        'article.id as id, prix, description, article.nom as nom, user.id as user, dateAjout',
-    );
-    qb.innerJoin('article.user', 'user');
-    qb.where({user: id});
+  async findByUser(id): Promise<Stock[]> {
+    const qb =  this.articleRepository
+        .createQueryBuilder('article')
+        .select("article.id as id, user.id as userId, article.nom as nom, article.description as description, article.prix as prix, article.dateAjout as dateAjout")
+        .leftJoin('user', 'user', "article.userId=user.id")
+        .where(`user.id=${id}`)
+
+    console.log(qb.getSql());
+    return qb.execute();
+  }
+
+  async findByUserStock(id): Promise<Stock[]> {
+    const qb =  this.stockRepository
+        .createQueryBuilder('stock')
+        .select("article.id as id, stock.id as stockref, quantite, user.id as userId, article.nom as nom, article.description as description, article.prix as prix, article.dateAjout as dateAjout")
+        .leftJoin('article', 'article', "article.id=stock.articleId")
+        .leftJoin('user', 'user', "user.id=article.userId")
+        .where(`user.id=${id}`)
+
     console.log(qb.getSql());
     return qb.execute();
   }

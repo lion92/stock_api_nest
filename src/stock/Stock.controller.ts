@@ -22,31 +22,21 @@ export class StockController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id, @Body() jwt: { jwt: string }): Promise<string> {
-    const data = await this.jwtService.verifyAsync(jwt.jwt, { secret: 'Je veux pas donner mon mot de passe' });
-    if (!data) {
-      throw new UnauthorizedException();
-    }
+  async remove(@Param('id') id): Promise<string> {
+
     await this.stockService.delete(id);
     return 'ok';
   }
 
   @Put(':id')
   async update(@Param('id') id, @Body() stock: StockDTO): Promise<string> {
-    const data = await this.jwtService.verifyAsync(stock.jwt, { secret: 'Je veux pas donner mon mot de passe' });
-    if (!data) {
-      throw new UnauthorizedException();
-    }
     await this.stockService.update(id,stock );
     return 'ok';
   }
 
   @Post()
   async create(@Body() stock: Stock, @Body() jwt: { jwt: string }) {
-    const data = await this.jwtService.verifyAsync(jwt.jwt, { secret: 'Je veux pas donner mon mot de passe' });
-    if (!data) {
-      throw new UnauthorizedException();
-    }
+
     await this.stockService.create(stock);
   }
 
