@@ -40,10 +40,10 @@ export class ConnectionService {
       throw new NotFoundException('User Not found');
     } else {
       let bool = await compare(user.password, userFind.password);
-      console.log(bool);
       if (!bool) {
         throw new UnauthorizedException('illegal');
       } else {
+      console.log(bool);
         const jwt = await this.jwtService.signAsync({ id: userFind.id }, { secret: 'Je veux pas donner mon mot de passe' });
 
         res.cookie('jwt', jwt, { httpOnly: true });
@@ -55,7 +55,6 @@ export class ConnectionService {
           jwt: jwt,
         };
       }
-
     }
   }
 

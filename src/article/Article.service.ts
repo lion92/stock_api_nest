@@ -29,7 +29,16 @@ export class ArticleService {
   async create(categorieDTO: Article) {
     await this.articleRepository.save(categorieDTO);
   }
-
+  async findByUser(id): Promise<any[]> {
+    const qb = this.articleRepository.createQueryBuilder('article');
+    qb.select(
+        'article.id as id, prix, description, article.nom as nom, user.id as user, dateAjout',
+    );
+    qb.innerJoin('article.user', 'user');
+    qb.where({user: id});
+    console.log(qb.getSql());
+    return qb.execute();
+  }
   async update(id: number, articleDTO: ArticleDTO) {
     await this.articleRepository.update(id, {
       dateAjout: articleDTO.dateAjout, description: articleDTO.description, id: articleDTO.id, nom: articleDTO.nom, prix: articleDTO.prix
