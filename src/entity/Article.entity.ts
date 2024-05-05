@@ -1,7 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './User.entity';
 
-
 @Entity()
 export class Article {
 
@@ -15,7 +14,7 @@ export class Article {
   description: string;
 
 
-  @Column("decimal", { name: 'amount',
+  @Column("decimal", {
     nullable: true,
     precision: 33,
     scale: 18} )

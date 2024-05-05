@@ -1,7 +1,5 @@
-import {Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn} from 'typeorm';
-import { User } from './User.entity';
+import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from 'typeorm';
 import {Article} from "./Article.entity";
-
 
 @Entity()
 export class Stock {
@@ -19,11 +17,8 @@ export class Stock {
   dateAjout:Date
 
 
-  @ManyToOne(() => User, author => User, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
-
-  @OneToOne(type => Article, article => article.id) article: Article;
+  @OneToOne(() => Article)
+  @JoinColumn()
+  article: Article;
 
 }

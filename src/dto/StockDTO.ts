@@ -1,6 +1,6 @@
-import {UserDTO} from "./UserDTO";
-import {User} from "../entity/User.entity";
+import {Stock} from "../entity/Stock.entity";
 import {Article} from "../entity/Article.entity";
+
 
 export class StockDTO {
     readonly id: number;

@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import {Article} from "../entity/Stock.entity";
+import {Article} from "../entity/Article.entity";
+import {ArticleDTO} from "../dto/ArticleDTO";
+
 
 @Injectable()
 export class ArticleService {
@@ -28,9 +30,9 @@ export class ArticleService {
     await this.articleRepository.save(categorieDTO);
   }
 
-  async update(id: number, articleDTO: Article) {
+  async update(id: number, articleDTO: ArticleDTO) {
     await this.articleRepository.update(id, {
-      article: articleDTO.article
+      dateAjout: articleDTO.dateAjout, description: articleDTO.description, id: articleDTO.id, nom: articleDTO.nom, prix: articleDTO.prix
     });
   }
 

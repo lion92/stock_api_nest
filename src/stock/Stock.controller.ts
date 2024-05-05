@@ -37,7 +37,7 @@ export class StockController {
     if (!data) {
       throw new UnauthorizedException();
     }
-    await this.stockService.update(id, stock);
+    await this.stockService.update(id,stock );
     return 'ok';
   }
 

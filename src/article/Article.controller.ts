@@ -15,11 +15,6 @@ export class ArticleController {
     return await this.articleService.findAll();
   }
 
-  @Get('/byuser/:user')
-  async findAllByUser(@Param('user') userId): Promise<ArticleDTO[] | string> {
-    return await this.articleService.findByUser(userId);
-  }
-
   @Get(':id')
   async findOne(@Param('id') id): Promise<ArticleDTO | void> {
     return await this.articleService.findOneBy(id).then(value => value).catch(reason => console.log(reason));
