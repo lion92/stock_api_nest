@@ -48,12 +48,12 @@ export class ArticleController {
     }
 
     @Put(':id')
-    async update(@Param('id') id, @Body() categorieDTO: ArticleDTO): Promise<string> {
-        const data = await this.jwtService.verifyAsync(categorieDTO.jwt, {secret: 'Je veux pas donner mon mot de passe'});
+    async update(@Param('id') id, @Body() articleDTO: ArticleDTO): Promise<string> {
+        const data = await this.jwtService.verifyAsync(articleDTO.jwt, {secret: 'Je veux pas donner mon mot de passe'});
         if (!data) {
             throw new UnauthorizedException();
         }
-        await this.articleService.update(id, categorieDTO);
+        await this.articleService.update(id, articleDTO);
         return 'ok';
     }
 
