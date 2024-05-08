@@ -21,6 +21,38 @@ export class ArticleController {
     async findAll(): Promise<ArticleDTO[] | string> {
         return await this.articleService.findAll();
     }
+
+    @Get('/byuserName/:user')
+    async findAllByUserByName(@Param('user') userId): Promise<any[] | string> {
+        return await this.articleService.findByUserByName(userId);
+    }
+
+    @Get('/byuserDescription/:user')
+    async findAllByUserByDescription(@Param('user') userId): Promise<any[] | string> {
+        return await this.articleService.findByUserByDescription(userId);
+    }
+
+    @Get('/byuserDate/:user')
+    async findAllByUserByDate(@Param('user') userId): Promise<any[] | string> {
+        return await this.articleService.findByUserByDate(userId);
+    }
+
+    @Get('/byuserPrix/:user')
+    async findAllByUserByPrice(@Param('user') userId): Promise<any[] | string> {
+        return await this.articleService.findByUserByPrice(userId);
+    }
+
+    @Get('/byuser-stock-name/:user')
+    async findAllByUserStockByName(@Param('user') userId): Promise<any[] | string> {
+        return await this.articleService.findByUserStockByName(userId);
+    }
+
+    @Get('/byuser-stock-quantite/:user')
+    async findAllByUserStockByDescription(@Param('user') userId): Promise<any[] | string> {
+        return await this.articleService.findByUserStockByQuantite(userId);
+    }
+
+
   @Get('/byuser/:user')
   async findAllByUser(@Param('user') userId): Promise<any[] | string> {
     return await this.articleService.findByUser(userId);
@@ -48,12 +80,12 @@ export class ArticleController {
     }
 
     @Put(':id')
-    async update(@Param('id') id, @Body() articleDTO: ArticleDTO): Promise<string> {
-        const data = await this.jwtService.verifyAsync(articleDTO.jwt, {secret: 'Je veux pas donner mon mot de passe'});
+    async update(@Param('id') id, @Body() categorieDTO: ArticleDTO): Promise<string> {
+        const data = await this.jwtService.verifyAsync(categorieDTO.jwt, {secret: 'Je veux pas donner mon mot de passe'});
         if (!data) {
             throw new UnauthorizedException();
         }
-        await this.articleService.update(id, articleDTO);
+        await this.articleService.update(id, categorieDTO);
         return 'ok';
     }
 
