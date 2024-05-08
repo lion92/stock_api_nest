@@ -17,7 +17,7 @@ export class Article {
   @Column("decimal", {
     nullable: true,
     precision: 33,
-    scale: 18} )
+    scale: 3} )
   prix: number;
 
   @Column({
