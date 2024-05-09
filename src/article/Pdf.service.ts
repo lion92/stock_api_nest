@@ -12,6 +12,8 @@ export class PdfService {
     const doc = new PDFDocument();
     let rowsToPdf=[];
     const newVar1 = await this.article.findByUserStockByName(id);
+    let total=await this.article.findByUserStockBySumPrixStock(id)
+    console.log(total)
     console.log(newVar1);
 
     doc.text('Bilan');
@@ -21,11 +23,9 @@ export class PdfService {
       headers:["id", "ref","quantite","Nom","Description","Prix","Date Ajout"],
       rows:rowsToPdf
     }
-
-
-
-
+    
     await doc.moveDown().table(table);
+    doc.text("Valeur total du stock: " + total[0].prix);
     const fileName = 'bilan.pdf';
     doc.pipe(fs.createWriteStream(fileName));
     doc.end();

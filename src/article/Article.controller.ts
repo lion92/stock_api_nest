@@ -148,7 +148,7 @@ export class ArticleController {
 
 
     @Get('/byuserSum/:user')
-    async findAllByUserSum(@Param('user') userId): Promise<number> {
+    async findAllByUserSum(@Param('user') userId): Promise<[{prix:number}]> {
         let numberPromise = await this.articleService.findByUserStockBySumPrixStock(userId);
         console.log(numberPromise)
         return numberPromise;

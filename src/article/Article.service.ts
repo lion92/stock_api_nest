@@ -135,7 +135,7 @@ export class ArticleService {
     return qb.execute();
   }
 
-  async findByUserStockBySumPrixStock(id): Promise<number> {
+  async findByUserStockBySumPrixStock(id): Promise<[{prix:number}]> {
     const qb =  this.stockRepository
         .createQueryBuilder('stock')
         .select("sum(article.prix * stock.quantite) as prix")
