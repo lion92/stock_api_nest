@@ -1,4 +1,4 @@
-import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from 'typeorm';
+import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, RelationOptions} from 'typeorm';
 import {Article} from "./Article.entity";
 
 @Entity()
@@ -20,5 +20,7 @@ export class Stock {
   @OneToOne(() => Article)
   @JoinColumn()
   article: Article;
+
+
 
 }
