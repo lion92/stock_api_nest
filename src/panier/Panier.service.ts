@@ -11,7 +11,7 @@ import {PanierDTO} from "../dto/PanierDTO";
 @Injectable()
 export class PanierService {
   constructor(
-    @InjectRepository(Article)
+    @InjectRepository(Panier)
     private panierRepository: Repository<Panier>,
     @InjectRepository(Stock)
     private stockRepository: Repository<Stock>,
@@ -63,15 +63,17 @@ export class PanierService {
     console.log('1');
   }
 
-  async create(categorieDTO: Panier) {
-    await this.panierRepository.save(categorieDTO);
+  async create(panier: PanierDTO) {
+    let panier1 = await this.panierRepository.save(panier);
+    console.log(panier1)
+
   }
   async findByUser(id): Promise<any[]> {
     const qb =  this.panierRepository
-        .createQueryBuilder('article')
-        .select("article.id as id, user.id as userId, article.nom as nom, article.description as description, article.prix as prix, article.dateAjout as dateAjout")
-        .leftJoin('user', 'user', "article.userId=user.id")
-        .where(`user.id=${id}`)
+        .createQueryBuilder('panier')
+        .select("panier.id as id, panier.userId as userId, panier.prix as prix, panier.dateAjout as dateAjout, panier.quantite as quantite")
+        .leftJoin('user', 'user', "panier.userId=user.id")
+        .where(`panier.userId=${id}`)
 
     console.log(qb.getSql());
     return qb.execute();
@@ -81,12 +83,12 @@ export class PanierService {
 
   async findByUserStock(id): Promise<any[]> {
     const qb =  this.stockRepository
-        .createQueryBuilder('stock')
-        .select("panier.prix as totalPanier, panier.quantite as quantitePanier, article.id as id, stock.id as stockref, quantite, user.id as userId, article.nom as nom, article.description as description, article.prix as prix, article.dateAjout as dateAjout")
+        .createQueryBuilder('panier')
+        .select("panier.quantite as quantity, panier.prix as totalPanier, article.id as id, stock.id as stockref, user.id as userId, article.nom as nom, article.description as description, article.prix as prix, article.dateAjout as dateAjout")
+        .leftJoin('stock', 'stock', "stock.id=panier.stockId")
         .leftJoin('article', 'article', "article.id=stock.articleId")
-        .leftJoin('user', 'user', "user.id=article.userId")
-        .leftJoin('panier', 'panier', "stock.id=panier.stockId")
-        .where(`user.id=${id}`)
+        .leftJoin('user', 'user', "user.id=panier.userId")
+        .where(`panier.id=${id}`)
 
     console.log(qb.getSql());
     return qb.execute();

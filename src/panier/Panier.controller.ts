@@ -1,18 +1,13 @@
-import {Body, Controller, Delete, Get, Param, Put, Res, UnauthorizedException} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, Res, UnauthorizedException} from '@nestjs/common';
 
 import {PanierService} from './Panier.service';
 import {JwtService} from '@nestjs/jwt';
-import {InjectRepository} from "@nestjs/typeorm";
-import {Article} from "../entity/Article.entity";
-import {Repository} from "typeorm";
 import {PanierDTO} from "../dto/PanierDTO";
-import {Panier} from "../entity/Panier.entity";
 
 @Controller('panier')
 export class PanierController {
 
-    constructor(@InjectRepository(Article)
-                private panierRepository: Repository<Panier>,
+    constructor(
                 private readonly panierService: PanierService,
                 private jwtService: JwtService) {
     }
@@ -194,6 +189,11 @@ export class PanierController {
         }
         await this.panierService.update(id, categorieDTO);
         return 'ok';
+    }
+
+    @Post()
+    async create(@Body() panier: PanierDTO) {
+        await this.panierService.create(panier);
     }
 
 

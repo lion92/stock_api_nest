@@ -7,6 +7,7 @@ import {JwtModule} from '@nestjs/jwt';
 import {MulterModule} from '@nestjs/platform-express';
 import {ArticleModule} from "./article/ArticleModule";
 import {StockModule} from "./stock/StockModule";
+import {PanierModule} from "./panier/PanierModule";
 
 @Module({
     imports: [
@@ -27,6 +28,7 @@ import {StockModule} from "./stock/StockModule";
         ArticleModule,
         ConnectionModule,
         StockModule,
+        PanierModule
     ],
     controllers: [AppController],
     providers: [AppService],

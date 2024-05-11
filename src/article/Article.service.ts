@@ -126,7 +126,7 @@ export class ArticleService {
   async findByUserStock(id): Promise<any[]> {
     const qb =  this.stockRepository
         .createQueryBuilder('stock')
-        .select("article.id as id, stock.id as stockref, quantite, user.id as userId, article.nom as nom, article.description as description, article.prix as prix, article.dateAjout as dateAjout")
+        .select("user.nom as nomVendeur, user.prenom as prenomVendeur, article.id as id, stock.id as stockref, quantite, user.id as userId, article.nom as nom, article.description as description, article.prix as prix, article.dateAjout as dateAjout")
         .leftJoin('article', 'article', "article.id=stock.articleId")
         .leftJoin('user', 'user', "user.id=article.userId")
         .where(`user.id=${id}`)

@@ -11,7 +11,6 @@ export class Panier {
     @Column()
     quantite: number;
 
-
     @Column("decimal", {
         nullable: true,
         precision: 33,
