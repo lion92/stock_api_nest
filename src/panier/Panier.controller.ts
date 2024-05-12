@@ -3,12 +3,15 @@ import {Body, Controller, Delete, Get, Param, Post, Put, Res, UnauthorizedExcept
 import {PanierService} from './Panier.service';
 import {JwtService} from '@nestjs/jwt';
 import {PanierDTO} from "../dto/PanierDTO";
+import {StockService} from "../stock/Stock.service";
+import {UnknownElementException} from "@nestjs/core/errors/exceptions";
 
 @Controller('panier')
 export class PanierController {
 
     constructor(
                 private readonly panierService: PanierService,
+                private readonly stockService: StockService,
                 private jwtService: JwtService) {
     }
 
@@ -192,8 +195,22 @@ export class PanierController {
     }
 
     @Post()
-    async create(@Body() panier: PanierDTO) {
-        await this.panierService.create(panier);
+    async create(@Body() panier:any) {
+        console.log(panier)
+        let stock2 = await this.stockService.findOneBy(panier.stock)
+        let num=stock2.quantite -panier.quantite;
+        console.log(num)
+        console.log(stock2)
+            await this.stockService.update(stock2.id, {
+                article: stock2.article,
+                dateAjout: stock2.dateAjout,
+                id: stock2.id,
+                quantite: num
+            }).catch(e=>{
+                console.log(e)
+            })
+            await this.panierService.create(panier);
+
     }
 
 

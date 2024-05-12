@@ -7,12 +7,13 @@ import {JwtService} from '@nestjs/jwt';
 import {Article} from "../entity/Article.entity";
 import {Stock} from "../entity/Stock.entity";
 import {Panier} from "../entity/Panier.entity";
+import {StockService} from "../stock/Stock.service";
 
 
 @Module({
   imports: [TypeOrmModule.forFeature([Article]),TypeOrmModule.forFeature([Stock]),TypeOrmModule.forFeature([Panier])],
   controllers: [PanierController],
-  providers: [PanierService, JwtService],
+  providers: [PanierService, JwtService, StockService],
 })
 export class PanierModule {
 }
