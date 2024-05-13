@@ -33,6 +33,11 @@ export class ConnectionController {
     return await this.connectionService.login(user, res).then(value => value).catch((reason) => console.log(reason));
   }
 
+  @Post('/change-pass')
+  async changePassword(@Body() user: UserDTO, @Res({ passthrough: true }) res: Response): Promise<string | void> {
+    return await this.connectionService.changePassword(user, res).then(value => value).catch((reason) => console.log(reason));
+  }
+
   @Put(':id')
   async update(@Param('id') id, @Body() user: UserDTO, @Body() jwt: { jwt: string }): Promise<void> {
     const data = await this.jwtService.verifyAsync(jwt.jwt, { secret: 'Je veux pas donner mon mot de passe' });

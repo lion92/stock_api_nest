@@ -1,11 +1,11 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { UserDTO } from '../dto/UserDTO';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { User } from '../entity/User.entity';
-import { compare, hash } from 'bcrypt';
-import { LoginDTO } from '../dto/LoginDTO';
-import { JwtService } from '@nestjs/jwt';
+import {Injectable, NotFoundException, UnauthorizedException} from '@nestjs/common';
+import {UserDTO} from '../dto/UserDTO';
+import {InjectRepository} from '@nestjs/typeorm';
+import {Repository} from 'typeorm';
+import {User} from '../entity/User.entity';
+import {compare, hash} from 'bcrypt';
+import {LoginDTO} from '../dto/LoginDTO';
+import {JwtService} from '@nestjs/jwt';
 
 @Injectable()
 export class ConnectionService {
@@ -57,6 +57,34 @@ export class ConnectionService {
       }
     }
   }
+
+  async changePassword(
+      user: LoginDTO, res,
+  ): Promise<string> {
+    const { password, email, password2 } = user;
+    console.log(user)
+    const userFind = await this.userRepository.findOneBy({ email: email });
+    console.log(userFind)
+    if (!userFind) {
+      throw new NotFoundException('User Not found');
+    } else {
+      let bool = await compare(user.password, userFind.password);
+      if (!bool) {
+        throw new UnauthorizedException('illegal');
+      } else {
+        user.password = await hash(user.password2, 10);
+        let updateResult = await this.userRepository.update(userFind.id, {
+          nom: userFind.nom,
+          prenom: userFind.prenom,
+          password: user.password
+        });
+        console.log(updateResult);
+
+        return "ok"
+
+      };
+      }
+    }
 
   async update(id: number, userDTO: UserDTO) {
     await this.userRepository.update(id, { nom: userDTO.nom, prenom: userDTO.prenom });
