@@ -35,7 +35,10 @@ export class ConnectionController {
 
   @Post('/change-pass')
   async changePassword(@Body() user: UserDTO, @Res({ passthrough: true }) res: Response): Promise<string | void> {
-    return await this.connectionService.changePassword(user, res).then(value => value).catch((reason) => console.log(reason));
+
+    let s = await this.connectionService.changePassword(user, res);
+    console.log(s)
+    return s
   }
 
   @Put(':id')
