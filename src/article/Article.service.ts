@@ -87,6 +87,7 @@ export class ArticleService {
     return qb.execute();
   }
 
+
   async findByUserByDescription(id): Promise<Stock[]> {
     const qb =  this.articleRepository
         .createQueryBuilder('article')
@@ -134,6 +135,18 @@ export class ArticleService {
     console.log(qb.getSql());
     return qb.execute();
   }
+
+  async findAllForStock(): Promise<any[]> {
+    const qb =  this.stockRepository
+        .createQueryBuilder('stock')
+        .select("user.nom as nomVendeur, user.prenom as prenomVendeur, article.id as id, stock.id as stockref, quantite, user.id as userId, article.nom as nom, article.description as description, article.prix as prix, article.dateAjout as dateAjout")
+        .leftJoin('article', 'article', "article.id=stock.articleId")
+        .leftJoin('user', 'user', "user.id=article.userId")
+
+    console.log(qb.getSql());
+    return qb.execute();
+  }
+
 
   async findByUserStockBySumPrixStock(id): Promise<[{prix:number}]> {
     const qb =  this.stockRepository

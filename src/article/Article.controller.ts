@@ -27,6 +27,12 @@ export class ArticleController {
         return await this.articleService.findAll();
     }
 
+
+    @Get("all-stock")
+    async findAllStock(): Promise<any[] | string> {
+        return await this.articleService.findAllForStock();
+    }
+
     @Get('/byuserName/:user')
     async findAllByUserByName(@Param('user') userId): Promise<any[] | string> {
         return await this.articleService.findByUserByName(userId);
