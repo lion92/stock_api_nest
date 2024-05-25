@@ -71,8 +71,23 @@ export class PanierService {
   async findByUser(id): Promise<any[]> {
     const qb =  this.panierRepository
         .createQueryBuilder('panier')
-        .select("panier.id as id, panier.userId as userId, panier.prix as prix, panier.dateAjout as dateAjout, panier.quantite as quantite")
+        .select("panier.id as id, panier.userId as userId, panier.prix as prix, panier.dateAjout as dateAjout, panier.quantite as quantite, article.nom as nomArticle, article.description as descriptionArticle")
         .leftJoin('user', 'user', "panier.userId=user.id")
+        .leftJoin('stock', 'stock', "panier.stockId=stock.id")
+        .leftJoin('article', 'article', "article.id=stock.articleId")
+        .where(`panier.userId=${id}`)
+
+    console.log(qb.getSql());
+    return qb.execute();
+  }
+
+  async findByUserSum(id): Promise<any[]> {
+    const qb =  this.panierRepository
+        .createQueryBuilder('panier')
+        .select("sum(panier.prix * panier.quantite) as prix")
+        .leftJoin('user', 'user', "panier.userId=user.id")
+        .leftJoin('stock', 'stock', "panier.stockId=stock.id")
+        .leftJoin('article', 'article', "article.id=stock.articleId")
         .where(`panier.userId=${id}`)
 
     console.log(qb.getSql());

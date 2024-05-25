@@ -4,7 +4,6 @@ import {AppService} from './app.service';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {ConnectionModule} from './connection/connection.module';
 import {JwtModule} from '@nestjs/jwt';
-import {MulterModule} from '@nestjs/platform-express';
 import {ArticleModule} from "./article/ArticleModule";
 import {StockModule} from "./stock/StockModule";
 import {PanierModule} from "./panier/PanierModule";

@@ -8,12 +8,15 @@ import {Article} from "../entity/Article.entity";
 import {Repository} from "typeorm";
 import {Response} from 'express';
 import {PdfService} from "./Pdf.service";
+import {Panier} from "../entity/Panier.entity";
 
 @Controller('article')
 export class ArticleController {
 
     constructor(@InjectRepository(Article)
                 private articleRepository: Repository<Article>,
+                @InjectRepository(Panier)
+                private panierService: Repository<Article>,
                 private readonly articleService: ArticleService,
                 private readonly pdfService: PdfService,
                 private jwtService: JwtService) {
@@ -148,7 +151,7 @@ export class ArticleController {
 
 
     @Get('/byuserSum/:user')
-    async findAllByUserSum(@Param('user') userId): Promise<[{prix:number}]> {
+    async findAllByUserSum(@Param('user') userId): Promise<[{ prix: number }]> {
         let numberPromise = await this.articleService.findByUserStockBySumPrixStock(userId);
         console.log(numberPromise)
         return numberPromise;
@@ -229,6 +232,14 @@ export class ArticleController {
     async generatePdf(@Res() res: Response, @Param('id') id) {
         const pdfStream = this.pdfService.generatePdf(id);
         res.setHeader('Content-Disposition', 'attachment; filename="example.pdf"');
+        res.setHeader('Content-Type', 'application/pdf');
+        pdfStream.then(value => value.pipe(res))
+    }
+
+    @Get('generate-invoice-pdf/:id')
+    async generateInvoicePdf(@Res() res: Response, @Param('id') id) {
+        const pdfStream = this.pdfService.generateInvoicePdf(id);
+        res.setHeader('Content-Disposition', 'attachment; filename="invoice.pdf"');
         res.setHeader('Content-Type', 'application/pdf');
         pdfStream.then(value => value.pipe(res))
     }
