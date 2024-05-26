@@ -33,6 +33,23 @@ export class ArticleController {
         return await this.articleService.findAllForStock();
     }
 
+    @Get("all-stock-bynom/:nom")
+    async findAllStockByNom(@Param("nom")nom:string): Promise<any[] | string> {
+        return await this.articleService.findAllForStockByNom(nom);
+    }
+
+    @Get("all-stock-bydescription/:desc")
+    async findAllStockByDescription(@Param("desc")desc:string): Promise<any[] | string> {
+        return await this.articleService.findAllForStockByDescription(desc);
+    }
+
+    @Get("all-stock-bynomvendeur/:nomvendeur")
+    async findAllStockByNomVendeur(@Param("nomvendeur")nomvendeur:string): Promise<any[] | string> {
+        return await this.articleService.findAllForStockByNomVendeur(nomvendeur);
+    }
+
+
+
     @Get('/byuserName/:user')
     async findAllByUserByName(@Param('user') userId): Promise<any[] | string> {
         return await this.articleService.findByUserByName(userId);
@@ -171,6 +188,26 @@ export class ArticleController {
     @Get('/byuserDate/:user')
     async findAllByUserByDate(@Param('user') userId): Promise<any[] | string> {
         return await this.articleService.findByUserByDate(userId);
+    }
+    @Get('/byuser-article-description/:user/:description')
+    async findByArticleDescription(@Param('user') userId:number,@Param('description')description:string): Promise<any[] | string> {
+        return await this.articleService.findByArticleUserByDescription(userId, description);
+    }
+
+    @Get('/byuser-article-nom/:user/:nom')
+    async findByArticleNom(@Param('user') userId:number,@Param('nom')nom:string): Promise<any[] | string> {
+        return await this.articleService.findByArticleUserByNom(userId, nom);
+    }
+
+
+    @Get('/byuser-stock-nom/:user/:nom')
+    async findByUserByNom(@Param('user') userId,@Param("nom")nom:string): Promise<any[] | string> {
+        return await this.articleService.findByUserStockName(userId, nom);
+    }
+
+    @Get('/byuser-stock-description/:user/:description')
+    async findByUserByDescription(@Param('user') userId, @Param("description")description:string): Promise<any[] | string> {
+        return await this.articleService.findByUserStockByDescriptionValue(userId, description);
     }
 
     @Get('/byuserPrix/:user')

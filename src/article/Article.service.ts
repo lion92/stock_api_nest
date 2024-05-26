@@ -124,6 +124,31 @@ export class ArticleService {
     return qb.execute();
   }
 
+  async findByArticleUserByNom(id, nom): Promise<Stock[]> {
+    const qb =  this.articleRepository
+        .createQueryBuilder('article')
+        .select("article.id as id, user.id as userId, article.nom as nom, article.description as description, article.prix as prix, article.dateAjout as dateAjout")
+        .leftJoin('user', 'user', "article.userId=user.id")
+        .where(`user.id=${id}`)
+        .where("nom like :name", { name:`%${nom}%`})
+
+    console.log(qb.getSql());
+    return qb.execute();
+  }
+
+
+  async findByArticleUserByDescription(id, description): Promise<Stock[]> {
+    const qb =  this.articleRepository
+        .createQueryBuilder('article')
+        .select("article.id as id, user.id as userId, article.nom as nom, article.description as description, article.prix as prix, article.dateAjout as dateAjout")
+        .leftJoin('user', 'user', "article.userId=user.id")
+        .where(`user.id=${id}`)
+        .where("description like :name", { name:`%${description}%`})
+
+    console.log(qb.getSql());
+    return qb.execute();
+  }
+
   async findByUserStock(id): Promise<any[]> {
     const qb =  this.stockRepository
         .createQueryBuilder('stock')
@@ -142,6 +167,42 @@ export class ArticleService {
         .select("user.nom as nomVendeur, user.prenom as prenomVendeur, article.id as id, stock.id as stockref, quantite, user.id as userId, article.nom as nom, article.description as description, article.prix as prix, article.dateAjout as dateAjout")
         .leftJoin('article', 'article', "article.id=stock.articleId")
         .leftJoin('user', 'user', "user.id=article.userId")
+
+    console.log(qb.getSql());
+    return qb.execute();
+  }
+
+  async findAllForStockByNom(nom:string): Promise<any[]> {
+    const qb =  this.stockRepository
+        .createQueryBuilder('stock')
+        .select("user.nom as nomVendeur, user.prenom as prenomVendeur, article.id as id, stock.id as stockref, quantite, user.id as userId, article.nom as nom, article.description as description, article.prix as prix, article.dateAjout as dateAjout")
+        .leftJoin('article', 'article', "article.id=stock.articleId")
+        .leftJoin('user', 'user', "user.id=article.userId")
+        .where("article.nom like :name", { name:`%${nom}%`})
+
+    console.log(qb.getSql());
+    return qb.execute();
+  }
+
+  async findAllForStockByDescription(description:string): Promise<any[]> {
+    const qb =  this.stockRepository
+        .createQueryBuilder('stock')
+        .select("user.nom as nomVendeur, user.prenom as prenomVendeur, article.id as id, stock.id as stockref, quantite, user.id as userId, article.nom as nom, article.description as description, article.prix as prix, article.dateAjout as dateAjout")
+        .leftJoin('article', 'article', "article.id=stock.articleId")
+        .leftJoin('user', 'user', "user.id=article.userId")
+        .where("article.description like :name", { name:`%${description}%`})
+
+    console.log(qb.getSql());
+    return qb.execute();
+  }
+
+  async findAllForStockByNomVendeur(nomVendeur:string): Promise<any[]> {
+    const qb =  this.stockRepository
+        .createQueryBuilder('stock')
+        .select("user.nom as nomVendeur, user.prenom as prenomVendeur, article.id as id, stock.id as stockref, quantite, user.id as userId, article.nom as nom, article.description as description, article.prix as prix, article.dateAjout as dateAjout")
+        .leftJoin('article', 'article', "article.id=stock.articleId")
+        .leftJoin('user', 'user', "user.id=article.userId")
+        .where("user.nom like :name", { name:`%${nomVendeur}%`})
 
     console.log(qb.getSql());
     return qb.execute();
@@ -195,4 +256,29 @@ export class ArticleService {
     });
   }
 
+  async findByUserStockName(userId, nom) {
+    const qb =  this.stockRepository
+        .createQueryBuilder('stock')
+        .select("article.id as id, stock.id as stockref, quantite, user.id as userId, article.nom as nom, article.description as description, article.prix as prix, article.dateAjout as dateAjout")
+        .leftJoin('article', 'article', "article.id=stock.articleId")
+        .leftJoin('user', 'user', "user.id=article.userId")
+        .where(`user.id=${userId}`)
+        .where("nom like :name", { name:`%${nom}%`})
+
+    console.log(qb.getSql());
+    return qb.execute();
+  }
+
+  async findByUserStockByDescriptionValue(userId, description: string) {
+    const qb =  this.stockRepository
+        .createQueryBuilder('stock')
+        .select("article.id as id, stock.id as stockref, quantite, user.id as userId, article.nom as nom, article.description as description, article.prix as prix, article.dateAjout as dateAjout")
+        .leftJoin('article', 'article', "article.id=stock.articleId")
+        .leftJoin('user', 'user', "user.id=article.userId")
+        .where(`user.id=${userId}`)
+        .where("description like :name", { name:`%${description}%`})
+
+          console.log(qb.getSql());
+    return qb.execute();
+  }
 }
